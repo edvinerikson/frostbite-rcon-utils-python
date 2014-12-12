@@ -21,7 +21,7 @@ except InvalidPassword, e:
     print('Invalid password!')
 else:
     print('We got all info, disconnect')
-    server.logout().quit().disconnect()
+    server.disconnect()
     print(info['server_info'], info['active_players'])
 
 `````
