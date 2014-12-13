@@ -6,3 +6,6 @@ class ServerTimeout(Exception):
 
 class NoDataReceived(Exception):
     pass
+
+class ServerUnReachable(Exception):
+    pass

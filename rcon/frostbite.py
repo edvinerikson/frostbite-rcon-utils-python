@@ -1,6 +1,5 @@
 from struct import *
 import socket
-import select
 import hashlib
 
 import exceptions
@@ -121,12 +120,13 @@ class Frostbite(object):
         [is_from_server, is_response, sequence, words] = cls.decode_packet(response)
         return words
 
-    def send_command(self, _socket, data):
-        request = self.encode_client_request(data)
+    @classmethod
+    def send_command(cls, _socket, data):
+        request = cls.encode_client_request(data)
         _socket.send(request)
 
-        response = self.receive_packet(_socket)
-        [is_from_server, is_response, sequence, words] = self.decode_packet(response)
+        response = cls.receive_packet(_socket)
+        [is_from_server, is_response, sequence, words] = cls.decode_packet(response)
         return words
 
     @staticmethod

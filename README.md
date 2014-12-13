@@ -30,36 +30,33 @@ else:
 ##Example #2
 `````python
 
-from rcon import exceptions
 from rcon import ConnectionHandler
+from rcon import exceptions
 
-password = 'hej123'
-def main(server):
-    server.login(password).enable_events()
-    while True:
-        try:
-            event = server.process_event()
-        except (exceptions.ServerTimeout, exceptions.NoDataReceived), e:
-            print('Server timeout or no data recevied, in event loop excepetion')
-            server.reconnect().login(password).enable_events()
-            print('Reconnected!')
-        else:
-            print(event)
+
 
 if __name__ == "__main__":
-    server = ConnectionHandler('127.0.0.1', 47200, 'bf4')
     try:
-        server.connect()
-    except exceptions.ServerTimeout, e:
-        print('Server timeout.')
-        server.reconnect()
-        print('Reconnected')
-        main(server)
+        server = ConnectionHandler('188.126.64.33', 47230, 'bf4')\
+        .login('password')\
+        .enable_events() 
 
-    except exceptions.InvalidPassword, e:
+    except exceptions.ServerTimeout as e:
+        print('Unable to connect')
+
+    except exceptions.InvalidPassword as e:
         print('Wrong password')
+
     else:
-        print('Seems to work here!')
-        main(server)
+        print('Successfully connected!')
+        while True:
+            try:
+                event = server.process_event()
+            except (exceptions.ServerTimeout, exceptions.NoDataReceived) as e:
+                print('Server timeout or no data recevied in event loop.')
+                server.reconnect().login('password').enable_events()
+                print('Reconnected!')
+            else:
+                print(event)
 
 `````

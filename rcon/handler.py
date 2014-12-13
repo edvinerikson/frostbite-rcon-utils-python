@@ -1,5 +1,8 @@
 import socket
 from time import sleep
+import logging
+logger = logging.getLogger(__name__)
+
 
 import frostbite
 import exceptions
@@ -33,17 +36,19 @@ class ConnectionHandler(CommandExtension):
         self.socket.close()
         return self
 
-    def reconnect(self):
+    def reconnect(self, max_seconds=20):
         reconnect = 1
-        while True:         
+        while True:
+            if reconnect >= max_seconds:
+                raise exceptions.ServerUnReachable(
+                'Server did not respond within the max_seconds interval: {0} seconds'.format(max_seconds)
+                )
             try:
                 self.connect()
             except exceptions.ServerTimeout:
                 reconnect *= 2
-                print("reconnect failed, retrying after {0} seconds".format(reconnect))
+                logger.info("reconnect failed, retrying after {0} seconds".format(reconnect))
             else:
-                print('Successfully reconnected')
-                #server.login('H4xxPass').enable_events()
                 return self
             sleep(reconnect)
 
