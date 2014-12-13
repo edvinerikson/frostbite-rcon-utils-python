@@ -3,3 +3,6 @@ class InvalidPassword(Exception):
 
 class ServerTimeout(Exception):
     pass
+
+class NoDataReceived(Exception):
+    pass

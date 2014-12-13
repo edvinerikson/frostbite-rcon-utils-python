@@ -1,8 +1,9 @@
 import socket
+from time import sleep
 
 import frostbite
-from commandextension import CommandExtension
 import exceptions
+from commands import Commands as CommandExtension
 
 class ConnectionHandler(CommandExtension):
 
@@ -18,10 +19,11 @@ class ConnectionHandler(CommandExtension):
 
     def connect(self):
         try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(1)
-            self.socket.connect((self.server_ip, self.server_port))
+            self.socket.connect((self.ip, self.port))
             self.socket.setblocking(1)
-            self.socket.settimeout(None)
+            #self.socket.settimeout(5)
         except socket.timeout:
             raise exceptions.ServerTimeout()
 
@@ -31,5 +33,19 @@ class ConnectionHandler(CommandExtension):
         self.socket.close()
         return self
 
+    def reconnect(self):
+        reconnect = 1
+        while True:         
+            try:
+                self.connect()
+            except exceptions.ServerTimeout:
+                reconnect *= 2
+                print("reconnect failed, retrying after {0} seconds".format(reconnect))
+            else:
+                print('Successfully reconnected')
+                #server.login('H4xxPass').enable_events()
+                return self
+            sleep(reconnect)
+
     def process_event(self):
-        return self.protocol.recive_packet(self.socket)
+        return self.protocol.receive_event(self.socket)

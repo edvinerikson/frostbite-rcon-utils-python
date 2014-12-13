@@ -1,4 +1,6 @@
 from struct import *
+import socket
+import select
 import hashlib
 
 import exceptions
@@ -92,13 +94,18 @@ class Frostbite(object):
         return True
 
     @classmethod
-    def receive_packet(cls, socket):
+    def receive_packet(cls, _socket):
         receive_buffer = ""
         while not cls.contains_complete_packet(receive_buffer):
             try:
-                receive_buffer += socket.recv(4096)
+                data = _socket.recv(4096)
+                receive_buffer += data
+                if data == "":
+                    raise exceptions.NoDataReceived('socket returned empty string ""')
             except socket.timeout:
                 raise exceptions.ServerTimeout('')
+            
+            
             
         packet_size = cls.decode_int32(receive_buffer[4:8])
 
@@ -107,11 +114,18 @@ class Frostbite(object):
 
         return packet
 
-    def send_command(self, socket, data):
-        request = self.encode_client_request(data)
-        socket.send(request)
+    @classmethod
+    def receive_event(cls, _socket):
+        response = cls.receive_packet(_socket)
 
-        response = self.receive_packet(socket)
+        [is_from_server, is_response, sequence, words] = cls.decode_packet(response)
+        return words
+
+    def send_command(self, _socket, data):
+        request = self.encode_client_request(data)
+        _socket.send(request)
+
+        response = self.receive_packet(_socket)
         [is_from_server, is_response, sequence, words] = self.decode_packet(response)
         return words
 

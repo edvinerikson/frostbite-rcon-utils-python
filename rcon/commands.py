@@ -1,18 +1,11 @@
 from exceptions import *
+from decorators import ChainResponse
 
-def ChainResponse(f):
-    def wrapper(*args):
-        instance = args[0]
-        #print(args)
-        instance.response.addResponse(f.__name__, f(*args))
-        return instance.response
-    return wrapper
-
-class CommandExtension(object):
+class Commands(object):
 
     def __init__(self):
         self.response = ResponseProxy(self)
-        super(CommandExtension, self).__init__()
+        super(Commands, self).__init__()
 
     def command(self, command, args=[]):
         if not type(args) == list:
@@ -60,6 +53,16 @@ class CommandExtension(object):
     def admin_list_players(self, player_subset):
         return self.command('admin.listPlayers', [player_subset])
 
+    @ChainResponse
+    def enable_events(self, state=True):
+        #BC2 support
+        command = 'eventsEnabled' if self.game in ['bc2'] else 'admin.eventsEnabled'
+        return self.command(command, [state])
+
+    @ChainResponse
+    def ping(self):
+        return self.command('ping')
+
 class ResponseProxy(object):
 
     def __init__(self, instance):
@@ -70,11 +73,12 @@ class ResponseProxy(object):
     def addResponse(self, key, val):
         self.__data[key] = val
 
-    def data(self, clear_cache=True):
-        data = self.__data
-        if clear_cache:
-            self.__data = {}
-        return data
+    def data(self):
+        return self.__data
+
+    def clear(self):
+        self.__data = {}
+        return self
 
     def __getattr__(self, name):
         if hasattr(self.instance, name):
