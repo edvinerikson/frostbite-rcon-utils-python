@@ -56,16 +56,9 @@ class CommandExtension(object):
     def list_players(self, player_subset):
         return self.command('listPlayers', [player_subset])
 
+    @ChainResponse
     def admin_list_players(self, player_subset):
         return self.command('admin.listPlayers', [player_subset])
-
-    @ChainResponse
-    def quit(self):
-        return self.command('quit')
-
-    @ChainResponse
-    def logout(self):
-        return self.command('logout')
 
 class ResponseProxy(object):
 

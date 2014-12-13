@@ -1,6 +1,7 @@
 from struct import *
 import hashlib
 
+import exceptions
 
 class Frostbite(object):
     client_sequence_nr = 0
@@ -94,8 +95,11 @@ class Frostbite(object):
     def receive_packet(cls, socket):
         receive_buffer = ""
         while not cls.contains_complete_packet(receive_buffer):
-            receive_buffer += socket.recv(4096)
-
+            try:
+                receive_buffer += socket.recv(4096)
+            except socket.timeout:
+                raise exceptions.ServerTimeout('')
+            
         packet_size = cls.decode_int32(receive_buffer[4:8])
 
         packet = receive_buffer[0:packet_size]

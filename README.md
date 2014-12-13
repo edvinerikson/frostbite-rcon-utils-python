@@ -14,7 +14,7 @@ from rcon import ConnectionHandler, InvalidPassword
 server = ConnectionHandler('127.0.0.1', 47200, 'bf4')
 
 try:
-    info = server.connect().login().server_info().active_players().data()
+    info = server.connect().login('password').server_info().active_players().data()
 except timeout, e:
     print('Unable to connect to server')
 except InvalidPassword, e:

@@ -1,3 +1,4 @@
 *.pyc
 frostbite_rcon_utils.egg-info
 dist
+test-rcon.py

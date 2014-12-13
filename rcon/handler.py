@@ -2,7 +2,7 @@ import socket
 
 import frostbite
 from commandextension import CommandExtension
-
+import exceptions
 
 class ConnectionHandler(CommandExtension):
 
@@ -17,10 +17,13 @@ class ConnectionHandler(CommandExtension):
         super(ConnectionHandler, self).__init__()
 
     def connect(self):
-        self.socket.settimeout(1)
-        self.socket.connect((self.server_ip, self.server_port))
-        self.socket.setblocking(1)
-        self.socket.settimeout(None)
+        try:
+            self.socket.settimeout(1)
+            self.socket.connect((self.server_ip, self.server_port))
+            self.socket.setblocking(1)
+            self.socket.settimeout(None)
+        except socket.timeout:
+            raise exceptions.ServerTimeout()
 
         return self
 
