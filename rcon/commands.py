@@ -1,4 +1,4 @@
-from exceptions import *
+import exceptions
 from decorators import ChainResponse
 
 class Commands(object):
@@ -21,7 +21,7 @@ class Commands(object):
         .encode("hex").upper()
 
         if not self.command('login.hashed', [hashed_password])[0] == "OK":
-            raise InvalidPassword('The supplied password is incorrect')
+            raise exceptions.InvalidPassword('The supplied password is incorrect')
 
         return self 
 
@@ -58,10 +58,6 @@ class Commands(object):
         #BC2 support
         command = 'eventsEnabled' if self.game in ['bc2'] else 'admin.eventsEnabled'
         return self.command(command, [state])
-
-    @ChainResponse
-    def ping(self):
-        return self.command('ping')
 
 class ResponseProxy(object):
 
