@@ -8,6 +8,7 @@ import frostbite
 import exceptions
 from commands import Commands as CommandExtension
 
+
 class ConnectionHandler(CommandExtension):
 
     def __init__(self, ip, port, game):

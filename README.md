@@ -38,6 +38,7 @@ from rcon import exceptions
 if __name__ == "__main__":
     try:
         server = ConnectionHandler('188.126.64.33', 47230, 'bf4')\
+        .connect()\
         .login('password')\
         .enable_events() 
 
