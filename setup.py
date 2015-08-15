@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='frostbite-rcon-utils',
-    version='0.0.1',
+    version='0.1.0',
     author='Edvin Erikson',
     author_email='edvin@rocketblast.com',
     url='http://github.com/rocketblast/frostbite-rcon-utils',
