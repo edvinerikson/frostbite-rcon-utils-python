@@ -5,16 +5,18 @@ setup(
     version='0.1.0',
     author='Edvin Erikson',
     author_email='edvin@rocketblast.com',
-    url='http://github.com/rocketblast/frostbite-rcon-utils',
-    download_url='http://github.com/rocketblast/frostbite-rcon-utils',
+    url='https://github.com/edvinerikson/frostbite-rcon-utils-python',
+    download_url='https://github.com/edvinerikson/frostbite-rcon-utils-python',
     license='MIT',
-    description="lightweight library for connecting to an frostbite based game (bf3, bf4, bfh, mohw, bc2)",
-    platforms= ('Windows', 'Linux', 'Mac OS X'),
+    description="A library that takes care of the encoding and decoding of packets sent to or " +
+                "from a Battlefield server (or any other server that uses their protocol).",
+    platforms=('Windows', 'Linux', 'Mac OS X'),
     classifiers=[
-    'Operating System :: OS Independent',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 2.7'
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7'
     ],
-    packages=['rcon'],
-    keywords = 'rocketblast rcon battlefield frostbite',
+    test_suite='tests',
+    packages=['frostbite_rcon_utils'],
+    keywords = 'rcon battlefield frostbite protocol encode decode',
 )
