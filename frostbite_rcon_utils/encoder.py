@@ -1,12 +1,4 @@
 from struct import pack
-# packet = {
-#     'sequence': 0,
-#     'is_from_server': True,
-#     'is_response': True,
-#     'total_words_length': 10,
-#     'size': 50,
-#     'words': ['OK']
-# }
 
 
 def encode_int32(num):
@@ -19,16 +11,18 @@ def encode_header(packet):
         header += 0x80000000
     if packet['is_response']:
         header += 0x40000000
-    return encode_int32(header) + encode_int32(packet['size']) + encode_int32(packet['total_words_length'])
+    return (encode_int32(header) +
+            encode_int32(packet['size']) +
+            encode_int32(packet['total_words_length']))
 
 
 def encode_words(packet):
     words = packet['words']
-    encoded_words = ''
+    encoded_words = b''
     for word in words:
         word = str(word)
         encoded_words += encode_int32(len(word))
-        encoded_words += word
+        encoded_words += str.encode(word)
         encoded_words += '\x00'
     return encoded_words
 

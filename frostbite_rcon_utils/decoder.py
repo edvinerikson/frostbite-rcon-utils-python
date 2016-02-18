@@ -1,6 +1,6 @@
 from struct import unpack
 
-from helpers import DEFAULT_HEADER_SIZE
+from .helpers import DEFAULT_HEADER_SIZE
 
 
 def decode_int32(buf):
@@ -15,7 +15,8 @@ def decode_words(buf):
     while offset < size:
         word_length = decode_int32(buf[offset:offset + 4])
         word = buf[offset + 4:offset + 4 + word_length]
-        words.append(int(word) if word.isdigit() else (word == 'true' if word == 'true' or word == 'false' else word))
+        words.append(int(word) if word.isdigit() else (
+            word == 'true' if word == 'true' or word == 'false' else word))
         offset += word_length + 5
     return words
 

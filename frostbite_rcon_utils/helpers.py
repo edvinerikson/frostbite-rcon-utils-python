@@ -6,7 +6,7 @@ def calculate_packet_size(words):
 
 
 def contains_complete_packet(buf):
-    from decoder import decode_int32
+    from .decoder import decode_int32
     return not (len(buf) < 8 or len(buf) < decode_int32(buf[4:8]))
 
 
