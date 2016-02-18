@@ -10,7 +10,7 @@ class TestEncoder(unittest.TestCase):
         self.encoded_packet = encode_packet(self.packet)
 
     def test_encode_packet_output_type(self):
-        self.assertEqual(type(self.encoded_packet), str,
+        self.assertEqual(type(self.encoded_packet), bytes,
                          'encode_packet doesn\'t return a string')
 
     def test_encode_packet_output_size(self):
