@@ -23,7 +23,7 @@ def encode_words(packet):
         word = str(word)
         encoded_words += encode_int32(len(word))
         encoded_words += str.encode(word)
-        encoded_words += '\x00'
+        encoded_words += b'\x00'
     return encoded_words
 
 
